@@ -1,11 +1,21 @@
 <div class="admin-topbar">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2 class="mb-0"><%= typeof title !== 'undefined' ? title : 'Admin' %></h2>
-        <form method="POST" action="/admin/logout" class="d-inline">
-            <button type="submit" class="btn btn-outline-danger btn-sm">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </button>
-        </form>
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <button
+        class="btn btn-link sidebar-toggle d-md-none me-2"
+        type="button"
+        onclick="toggleSidebar()"
+      >
+        <i class="bi bi-list fs-4"></i>
+      </button>
+      <h2 class="mb-0">
+        <%= typeof title !== 'undefined' ? title : 'Admin' %>
+      </h2>
     </div>
+    <form method="POST" action="/admin/logout" class="d-inline">
+      <button type="submit" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </button>
+    </form>
+  </div>
 </div>
-

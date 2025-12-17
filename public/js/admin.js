@@ -1,5 +1,13 @@
 // Admin JavaScript
 
+// Sidebar toggle for mobile
+function toggleSidebar () {
+  const sidebar = document.querySelector('.admin-sidebar')
+  const overlay = document.querySelector('.sidebar-overlay')
+  sidebar.classList.toggle('open')
+  overlay.classList.toggle('active')
+}
+
 // Handle flash messages
 document.addEventListener('DOMContentLoaded', function () {
   // Auto-dismiss alerts after 5 seconds
