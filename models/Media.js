@@ -1,52 +1,62 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const mediaSchema = new mongoose.Schema({
-  filename: {
-    type: String,
-    required: true
-  },
-  originalName: {
-    type: String,
-    required: true
-  },
-  mimeType: {
-    type: String,
-    required: true
-  },
-  sizes: {
-    large: {
-      storageId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-      },
-      width: Number,
-      height: Number,
-      bytes: Number
+const mediaSchema = new mongoose.Schema(
+  {
+    filename: {
+      type: String,
+      required: true
     },
-    medium: {
-      storageId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-      },
-      width: Number,
-      height: Number,
-      bytes: Number
+    originalName: {
+      type: String,
+      required: true
     },
-    thumb: {
-      storageId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+    title: {
+      type: String,
+      default: ''
+    },
+    alt: {
+      type: String,
+      default: ''
+    },
+    mimeType: {
+      type: String,
+      required: true
+    },
+    sizes: {
+      large: {
+        storageId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true
+        },
+        width: Number,
+        height: Number,
+        bytes: Number
       },
-      width: Number,
-      height: Number,
-      bytes: Number
+      medium: {
+        storageId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true
+        },
+        width: Number,
+        height: Number,
+        bytes: Number
+      },
+      thumb: {
+        storageId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true
+        },
+        width: Number,
+        height: Number,
+        bytes: Number
+      }
     }
+  },
+  {
+    timestamps: true
   }
-}, {
-  timestamps: true
-});
+)
 
-mediaSchema.index({ createdAt: -1 });
+mediaSchema.index({ createdAt: -1 })
 
-module.exports = mongoose.model('Media', mediaSchema);
-
+module.exports = mongoose.model('Media', mediaSchema)

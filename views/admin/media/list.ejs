@@ -1,50 +1,80 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3>Media Library</h3>
+  <h3>Media Library</h3>
 </div>
 
 <div class="card mb-4">
-    <div class="card-body">
-        <h5 class="card-title">Upload Images</h5>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <div class="mb-3">
-                <input type="file" class="form-control" id="imageFiles" name="images" multiple accept="image/*">
-                <small class="text-muted">You can select up to 20 images at once</small>
-            </div>
-            <button type="submit" class="btn btn-primary" id="uploadBtn">Upload Images</button>
-        </form>
-        <div id="uploadProgress" class="mt-3" style="display: none;">
-            <div class="progress mb-2">
-                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-            </div>
-            <div id="fileProgress"></div>
-        </div>
+  <div class="card-body">
+    <h5 class="card-title">Upload Images</h5>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="mb-3">
+        <input
+          type="file"
+          class="form-control"
+          id="imageFiles"
+          name="images"
+          multiple
+          accept="image/*"
+        />
+        <small class="text-muted">You can select up to 20 images at once</small>
+      </div>
+      <button type="submit" class="btn btn-primary" id="uploadBtn">
+        Upload Images
+      </button>
+    </form>
+    <div id="uploadProgress" class="mt-3" style="display: none">
+      <div class="progress mb-2">
+        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+      </div>
+      <div id="fileProgress"></div>
     </div>
+  </div>
 </div>
 
 <div class="card">
-    <div class="card-body">
-        <div class="row g-3" id="mediaGrid">
-            <% if (media && media.length > 0) { %>
-                <% media.forEach(m => { %>
-                    <div class="col-md-3" data-media-id="<%= m._id %>">
-                        <div class="card">
-                            <img src="/admin/media/image/<%= m._id %>/thumb" class="card-img-top" alt="<%= m.originalName %>">
-                            <div class="card-body p-2">
-                                <p class="card-text small mb-1"><%= m.originalName %></p>
-                                <p class="card-text small text-muted mb-2">
-                                    <%= new Date(m.createdAt).toLocaleDateString() %>
-                                </p>
-                                <button class="btn btn-sm btn-danger" onclick="deleteMedia('<%= m._id %>')">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <div class="col-12 text-center text-muted py-5">
-                    <p>No media uploaded yet</p>
-                </div>
-            <% } %>
+  <div class="card-body">
+    <div class="row g-3" id="mediaGrid">
+      <% if (media && media.length > 0) { %> <% media.forEach(m => { %>
+      <div class="col-md-3" data-media-id="<%= m._id %>">
+        <div class="card">
+          <img
+            src="/admin/media/image/<%= m._id %>/thumb"
+            class="card-img-top"
+            alt="<%= m.alt || m.originalName %>"
+          />
+          <div class="card-body p-2">
+            <p class="card-text small mb-1"><%= m.originalName %></p>
+            <div class="mb-2">
+              <input
+                type="text"
+                class="form-control form-control-sm mb-1"
+                placeholder="Title"
+                value="<%= m.title || '' %>"
+                data-field="title"
+                onchange="updateMedia('<%= m._id %>', this)"
+              />
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Alt text"
+                value="<%= m.alt || '' %>"
+                data-field="alt"
+                onchange="updateMedia('<%= m._id %>', this)"
+              />
+            </div>
+            <button
+              class="btn btn-sm btn-danger"
+              onclick="deleteMedia('<%= m._id %>')"
+            >
+              Delete
+            </button>
+          </div>
         </div>
+      </div>
+      <% }); %> <% } else { %>
+      <div class="col-12 text-center text-muted py-5">
+        <p>No media uploaded yet</p>
+      </div>
+      <% } %>
     </div>
+  </div>
 </div>
-
