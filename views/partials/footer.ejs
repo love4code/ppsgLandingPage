@@ -1,0 +1,55 @@
+<footer class="bg-dark text-light py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5><%= settings.companyName %></h5>
+                <% if (settings.address) { %>
+                    <p class="mb-1"><%= settings.address %></p>
+                <% } %>
+                <% if (settings.phone) { %>
+                    <p class="mb-1"><i class="bi bi-telephone"></i> <%= settings.phone %></p>
+                <% } %>
+                <% if (settings.email) { %>
+                    <p class="mb-1"><i class="bi bi-envelope"></i> <%= settings.email %></p>
+                <% } %>
+                <% if (settings.businessHours) { %>
+                    <p class="mb-0"><small><%= settings.businessHours %></small></p>
+                <% } %>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" class="text-light text-decoration-none">Home</a></li>
+                    <li><a href="/portfolio" class="text-light text-decoration-none">Portfolio</a></li>
+                    <li><a href="/products" class="text-light text-decoration-none">Products</a></li>
+                    <li><a href="/contact" class="text-light text-decoration-none">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Follow Us</h5>
+                <div class="d-flex gap-3">
+                    <% if (settings.socials && settings.socials.facebook) { %>
+                        <a href="<%= settings.socials.facebook %>" class="text-light" target="_blank"><i class="bi bi-facebook fs-4"></i></a>
+                    <% } %>
+                    <% if (settings.socials && settings.socials.instagram) { %>
+                        <a href="<%= settings.socials.instagram %>" class="text-light" target="_blank"><i class="bi bi-instagram fs-4"></i></a>
+                    <% } %>
+                    <% if (settings.socials && settings.socials.google) { %>
+                        <a href="<%= settings.socials.google %>" class="text-light" target="_blank"><i class="bi bi-google fs-4"></i></a>
+                    <% } %>
+                    <% if (settings.socials && settings.socials.twitter) { %>
+                        <a href="<%= settings.socials.twitter %>" class="text-light" target="_blank"><i class="bi bi-twitter fs-4"></i></a>
+                    <% } %>
+                    <% if (settings.socials && settings.socials.linkedin) { %>
+                        <a href="<%= settings.socials.linkedin %>" class="text-light" target="_blank"><i class="bi bi-linkedin fs-4"></i></a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="text-center">
+            <p class="mb-0">&copy; <%= new Date().getFullYear() %> <%= settings.companyName %>. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+

@@ -1,0 +1,55 @@
+<div class="mb-4">
+    <a href="/admin/contacts" class="btn btn-outline-secondary">← Back to Contacts</a>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Contact Details</h5>
+        <span class="badge bg-<%= contact.status === 'new' ? 'warning' : 'success' %>">
+            <%= contact.status %>
+        </span>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Date Submitted</dt>
+            <dd class="col-sm-9"><%= new Date(contact.createdAt).toLocaleString() %></dd>
+            
+            <% if (contact.productName) { %>
+                <dt class="col-sm-3">Product</dt>
+                <dd class="col-sm-9"><span class="badge bg-info"><%= contact.productName %></span></dd>
+            <% } %>
+            
+            <% if (contact.selectedSize) { %>
+                <dt class="col-sm-3">Selected Size</dt>
+                <dd class="col-sm-9"><span class="badge bg-secondary"><%= contact.selectedSize %></span></dd>
+            <% } %>
+            
+            <dt class="col-sm-3">Name</dt>
+            <dd class="col-sm-9"><%= contact.name %></dd>
+            
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9"><a href="mailto:<%= contact.email %>"><%= contact.email %></a></dd>
+            
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9"><%= contact.phone || '-' %></dd>
+            
+            <dt class="col-sm-3">Town/City</dt>
+            <dd class="col-sm-9"><%= contact.town %></dd>
+            
+            <dt class="col-sm-3">Message</dt>
+            <dd class="col-sm-9"><%- contact.message.replace(/\n/g, '<br>') %></dd>
+        </dl>
+        
+        <div class="mt-4">
+            <% if (contact.status === 'new') { %>
+                <form method="POST" action="/admin/contacts/<%= contact._id %>/contacted" class="d-inline">
+                    <button type="submit" class="btn btn-success">Mark as Contacted</button>
+                </form>
+            <% } %>
+            <form method="POST" action="/admin/contacts/<%= contact._id %>/delete" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this contact?')">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+

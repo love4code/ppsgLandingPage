@@ -1,0 +1,301 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Settings</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/admin/settings">
+            <h6 class="border-bottom pb-2 mb-3">Company Information</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="companyName" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="companyName" name="companyName" value="<%= settings.companyName || '' %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" value="<%= settings.phone || '' %>">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= settings.email || '' %>">
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="2"><%= settings.address || '' %></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="businessHours" class="form-label">Business Hours</label>
+                <input type="text" class="form-control" id="businessHours" name="businessHours" value="<%= settings.businessHours || '' %>" placeholder="e.g., Mon-Fri: 9am-5pm">
+            </div>
+            
+            <h6 class="border-bottom pb-2 mb-3 mt-4">Logo</h6>
+            <div class="mb-3">
+                <label class="form-label">Select Logo</label>
+                <input type="hidden" name="logoMediaId" id="logoMediaId" value="<%= settings.logoMediaId ? settings.logoMediaId : '' %>">
+                <div class="d-flex align-items-center gap-3">
+                    <div id="logoPreview" class="border rounded p-2" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                        <% if (settings.logoMediaId) { %>
+                            <img src="/admin/media/image/<%= settings.logoMediaId %>/thumb" class="img-fluid" alt="Logo">
+                        <% } else { %>
+                            <span class="text-muted small">No logo</span>
+                        <% } %>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="openMediaPicker('logo')">
+                            <i class="bi bi-image"></i> Select Image
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="clearMedia('logo')">
+                            <i class="bi bi-x"></i> Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <h6 class="border-bottom pb-2 mb-3 mt-4">Hero Section</h6>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="heroUseImage" name="heroUseImage" <%= settings.hero && settings.hero.useImage ? 'checked' : '' %>>
+                    <label class="form-check-label" for="heroUseImage">Use Hero Image</label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="heroHeadline" class="form-label">Headline</label>
+                <input type="text" class="form-control" id="heroHeadline" name="heroHeadline" value="<%= settings.hero && settings.hero.headline ? settings.hero.headline : '' %>">
+            </div>
+            <div class="mb-3">
+                <label for="heroSubheadline" class="form-label">Subheadline</label>
+                <input type="text" class="form-control" id="heroSubheadline" name="heroSubheadline" value="<%= settings.hero && settings.hero.subheadline ? settings.hero.subheadline : '' %>">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="heroCtaText" class="form-label">CTA Text</label>
+                        <input type="text" class="form-control" id="heroCtaText" name="heroCtaText" value="<%= settings.hero && settings.hero.ctaText ? settings.hero.ctaText : '' %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="heroCtaLink" class="form-label">CTA Link</label>
+                        <input type="text" class="form-control" id="heroCtaLink" name="heroCtaLink" value="<%= settings.hero && settings.hero.ctaLink ? settings.hero.ctaLink : '' %>">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Hero Image</label>
+                <input type="hidden" name="heroMediaId" id="heroMediaId" value="<%= settings.hero && settings.hero.heroMediaId ? settings.hero.heroMediaId : '' %>">
+                <div class="d-flex align-items-center gap-3">
+                    <div id="heroPreview" class="border rounded p-2" style="width: 150px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                        <% if (settings.hero && settings.hero.heroMediaId) { %>
+                            <img src="/admin/media/image/<%= settings.hero.heroMediaId %>/thumb" class="img-fluid" alt="Hero" style="max-height: 90px;">
+                        <% } else { %>
+                            <span class="text-muted small">No image</span>
+                        <% } %>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="openMediaPicker('hero')">
+                            <i class="bi bi-image"></i> Select Image
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="clearMedia('hero')">
+                            <i class="bi bi-x"></i> Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <h6 class="border-bottom pb-2 mb-3 mt-4">Social Links</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="facebook" class="form-label">Facebook</label>
+                        <input type="url" class="form-control" id="facebook" name="facebook" value="<%= settings.socials && settings.socials.facebook ? settings.socials.facebook : '' %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="instagram" class="form-label">Instagram</label>
+                        <input type="url" class="form-control" id="instagram" name="instagram" value="<%= settings.socials && settings.socials.instagram ? settings.socials.instagram : '' %>">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="google" class="form-label">Google</label>
+                        <input type="url" class="form-control" id="google" name="google" value="<%= settings.socials && settings.socials.google ? settings.socials.google : '' %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="twitter" class="form-label">Twitter</label>
+                        <input type="url" class="form-control" id="twitter" name="twitter" value="<%= settings.socials && settings.socials.twitter ? settings.socials.twitter : '' %>">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="linkedin" class="form-label">LinkedIn</label>
+                <input type="url" class="form-control" id="linkedin" name="linkedin" value="<%= settings.socials && settings.socials.linkedin ? settings.socials.linkedin : '' %>">
+            </div>
+            
+            <h6 class="border-bottom pb-2 mb-3 mt-4">Theme Settings</h6>
+            <div class="mb-3">
+                <label class="form-label">Theme Mode</label>
+                <select class="form-select" id="themeMode" name="themeMode" onchange="toggleThemeMode()">
+                    <option value="preset" <%= settings.theme && settings.theme.mode === 'preset' ? 'selected' : '' %>>Preset Theme</option>
+                    <option value="custom" <%= settings.theme && settings.theme.mode === 'custom' ? 'selected' : '' %>>Custom Theme</option>
+                </select>
+            </div>
+            <div id="presetThemeSection" style="display: <%= settings.theme && settings.theme.mode === 'preset' ? 'block' : 'none' %>;">
+                <div class="mb-3">
+                    <label class="form-label">Preset Theme</label>
+                    <select class="form-select" name="presetName">
+                        <option value="ocean-blue" <%= settings.theme && settings.theme.presetName === 'ocean-blue' ? 'selected' : '' %>>Ocean Blue</option>
+                        <option value="deep-teal" <%= settings.theme && settings.theme.presetName === 'deep-teal' ? 'selected' : '' %>>Deep Teal</option>
+                        <option value="crystal-clear" <%= settings.theme && settings.theme.presetName === 'crystal-clear' ? 'selected' : '' %>>Crystal Clear</option>
+                        <option value="midnight-blue" <%= settings.theme && settings.theme.presetName === 'midnight-blue' ? 'selected' : '' %>>Midnight Blue</option>
+                        <option value="tropical-turquoise" <%= settings.theme && settings.theme.presetName === 'tropical-turquoise' ? 'selected' : '' %>>Tropical Turquoise</option>
+                    </select>
+                </div>
+            </div>
+            <div id="customThemeSection" style="display: <%= settings.theme && settings.theme.mode === 'custom' ? 'block' : 'none' %>;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="customPrimary" class="form-label">Primary Color</label>
+                            <input type="color" class="form-control form-control-color" id="customPrimary" name="customPrimary" 
+                                value="<%= settings.theme && settings.theme.custom && settings.theme.custom.primary ? settings.theme.custom.primary : '#0d6efd' %>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="customSecondary" class="form-label">Secondary Color</label>
+                            <input type="color" class="form-control form-control-color" id="customSecondary" name="customSecondary" 
+                                value="<%= settings.theme && settings.theme.custom && settings.theme.custom.secondary ? settings.theme.custom.secondary : '#6c757d' %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="customBackground" class="form-label">Background Color</label>
+                            <input type="color" class="form-control form-control-color" id="customBackground" name="customBackground" 
+                                value="<%= settings.theme && settings.theme.custom && settings.theme.custom.background ? settings.theme.custom.background : '#ffffff' %>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="customText" class="form-label">Text Color</label>
+                            <input type="color" class="form-control form-control-color" id="customText" name="customText" 
+                                value="<%= settings.theme && settings.theme.custom && settings.theme.custom.text ? settings.theme.custom.text : '#212529' %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="customAccent" class="form-label">Accent Color</label>
+                    <input type="color" class="form-control form-control-color" id="customAccent" name="customAccent" 
+                        value="<%= settings.theme && settings.theme.custom && settings.theme.custom.accent ? settings.theme.custom.accent : '#0d6efd' %>">
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Media Picker Modal -->
+<div class="modal fade" id="mediaPickerModal" tabindex="-1" aria-labelledby="mediaPickerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mediaPickerModalLabel">Select Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3" id="mediaPickerGrid">
+                    <% if (media && media.length > 0) { %>
+                        <% media.forEach(m => { %>
+                            <div class="col-3">
+                                <div class="card media-picker-item" data-id="<%= m._id %>" style="cursor: pointer;">
+                                    <img src="/admin/media/image/<%= m._id %>/thumb" class="card-img-top" alt="<%= m.originalName %>" style="height: 100px; object-fit: cover;">
+                                    <div class="card-body p-2 text-center">
+                                        <small class="text-muted text-truncate d-block"><%= m.originalName %></small>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted">No media available.</p>
+                            <a href="/admin/media" class="btn btn-primary">Upload Media</a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentPickerTarget = null;
+
+function toggleThemeMode() {
+    const mode = document.getElementById('themeMode').value;
+    document.getElementById('presetThemeSection').style.display = mode === 'preset' ? 'block' : 'none';
+    document.getElementById('customThemeSection').style.display = mode === 'custom' ? 'block' : 'none';
+}
+
+function openMediaPicker(target) {
+    currentPickerTarget = target;
+    const modal = new bootstrap.Modal(document.getElementById('mediaPickerModal'));
+    modal.show();
+}
+
+function clearMedia(target) {
+    if (target === 'logo') {
+        document.getElementById('logoMediaId').value = '';
+        document.getElementById('logoPreview').innerHTML = '<span class="text-muted small">No logo</span>';
+    } else if (target === 'hero') {
+        document.getElementById('heroMediaId').value = '';
+        document.getElementById('heroPreview').innerHTML = '<span class="text-muted small">No image</span>';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle media picker item clicks
+    document.querySelectorAll('.media-picker-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const mediaId = this.dataset.id;
+            const imgSrc = this.querySelector('img').src;
+            
+            if (currentPickerTarget === 'logo') {
+                document.getElementById('logoMediaId').value = mediaId;
+                document.getElementById('logoPreview').innerHTML = `<img src="${imgSrc}" class="img-fluid" alt="Logo">`;
+            } else if (currentPickerTarget === 'hero') {
+                document.getElementById('heroMediaId').value = mediaId;
+                document.getElementById('heroPreview').innerHTML = `<img src="${imgSrc}" class="img-fluid" alt="Hero" style="max-height: 90px;">`;
+            }
+            
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('mediaPickerModal')).hide();
+        });
+    });
+    
+    // Highlight selected items on hover
+    document.querySelectorAll('.media-picker-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.classList.add('border-primary', 'shadow');
+        });
+        item.addEventListener('mouseleave', function() {
+            this.classList.remove('border-primary', 'shadow');
+        });
+    });
+});
+</script>

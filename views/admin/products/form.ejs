@@ -1,0 +1,304 @@
+<div class="mb-4">
+    <a href="/admin/products" class="btn btn-outline-secondary">← Back to Products</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><%= product ? 'Edit Product' : 'New Product' %></h5>
+    </div>
+    <div class="card-body">
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    <% errors.forEach(err => { %>
+                        <li><%= err.msg %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        <% } %>
+        
+        <form method="POST" action="/admin/products">
+            <% if (product && product._id) { %>
+                <input type="hidden" name="id" value="<%= product._id %>">
+            <% } %>
+            
+            <div class="mb-3">
+                <label for="name" class="form-label">Name *</label>
+                <input type="text" class="form-control" id="name" name="name" value="<%= product ? product.name : '' %>" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="shortDescription" class="form-label">Short Description</label>
+                <textarea class="form-control" id="shortDescription" name="shortDescription" rows="2"><%= product ? product.shortDescription : '' %></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="5"><%= product ? product.description : '' %></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" step="0.01" class="form-control" id="price" name="price" value="<%= product && product.price ? product.price : '' %>">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Available Sizes</label>
+                <div class="d-flex gap-2 mb-2">
+                    <input type="text" class="form-control" id="sizeInput" placeholder="Enter a size (e.g., 10x20, Small, Large)">
+                    <button type="button" class="btn btn-outline-primary" onclick="addSize()">Add Size</button>
+                </div>
+                <div id="sizeTags" class="d-flex flex-wrap gap-2 mb-2">
+                    <% if (product && product.sizes && product.sizes.length > 0) { %>
+                        <% product.sizes.forEach((size, index) => { %>
+                            <span class="badge bg-primary d-flex align-items-center gap-1 size-tag" data-size="<%= size %>">
+                                <%= size %>
+                                <button type="button" class="btn-close btn-close-white" style="font-size: 0.6rem;" onclick="removeSize(this)"></button>
+                                <input type="hidden" name="sizes" value="<%= size %>">
+                            </span>
+                        <% }); %>
+                    <% } %>
+                </div>
+                <small class="text-muted">Add sizes that customers can choose from when inquiring about this product.</small>
+            </div>
+            
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="featured" name="featured" <%= product && product.featured ? 'checked' : '' %>>
+                    <label class="form-check-label" for="featured">Featured</label>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="published" name="published" <%= product && product.published ? 'checked' : '' %>>
+                    <label class="form-check-label" for="published">Published</label>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Images</label>
+                <div class="d-flex align-items-start gap-3 mb-2">
+                    <button type="button" class="btn btn-outline-primary" onclick="openMediaPicker()">
+                        <i class="bi bi-images"></i> Select Images
+                    </button>
+                    <small class="text-muted mt-2">Click to open media library and select images for this product.</small>
+                </div>
+                <div id="selectedImages" class="row g-2">
+                    <% if (product && product.mediaIds && product.mediaIds.length > 0) { %>
+                        <% product.mediaIds.forEach(m => { %>
+                            <div class="col-2 selected-image-item" data-id="<%= m._id %>">
+                                <div class="card position-relative">
+                                    <img src="/admin/media/image/<%= m._id %>/thumb" class="card-img-top" alt="Selected" style="height: 80px; object-fit: cover;">
+                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="removeImage('<%= m._id %>')" style="padding: 0.1rem 0.4rem;">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                    <input type="hidden" name="mediaIds" value="<%= m._id %>">
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                </div>
+                <div id="noImagesText" class="text-muted" style="display: <%= product && product.mediaIds && product.mediaIds.length > 0 ? 'none' : 'block' %>;">
+                    No images selected.
+                </div>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Media Picker Modal -->
+<div class="modal fade" id="mediaPickerModal" tabindex="-1" aria-labelledby="mediaPickerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mediaPickerModalLabel">Select Images</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3">Click on images to select/deselect. Selected images will have a blue border.</p>
+                <div class="row g-3" id="mediaPickerGrid">
+                    <% if (media && media.length > 0) { %>
+                        <% media.forEach(m => { %>
+                            <div class="col-3">
+                                <div class="card media-picker-item <%= product && product.mediaIds && product.mediaIds.some(id => id.toString() === m._id.toString()) ? 'selected' : '' %>" 
+                                     data-id="<%= m._id %>" 
+                                     data-src="/admin/media/image/<%= m._id %>/thumb"
+                                     style="cursor: pointer;">
+                                    <img src="/admin/media/image/<%= m._id %>/thumb" class="card-img-top" alt="<%= m.originalName %>" style="height: 100px; object-fit: cover;">
+                                    <div class="card-body p-2 text-center">
+                                        <small class="text-muted text-truncate d-block"><%= m.originalName %></small>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted">No media available.</p>
+                            <a href="/admin/media" class="btn btn-primary">Upload Media</a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="confirmImageSelection()">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.media-picker-item {
+    transition: all 0.2s;
+}
+.media-picker-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.media-picker-item.selected {
+    border: 3px solid #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+.media-picker-item.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+</style>
+
+<script>
+function addSize() {
+    const input = document.getElementById('sizeInput');
+    const size = input.value.trim();
+    
+    if (!size) return;
+    
+    // Check if size already exists
+    const existingTags = document.querySelectorAll('.size-tag');
+    for (let tag of existingTags) {
+        if (tag.dataset.size.toLowerCase() === size.toLowerCase()) {
+            alert('This size already exists');
+            return;
+        }
+    }
+    
+    const sizeTags = document.getElementById('sizeTags');
+    const tag = document.createElement('span');
+    tag.className = 'badge bg-primary d-flex align-items-center gap-1 size-tag';
+    tag.dataset.size = size;
+    tag.innerHTML = `
+        ${size}
+        <button type="button" class="btn-close btn-close-white" style="font-size: 0.6rem;" onclick="removeSize(this)"></button>
+        <input type="hidden" name="sizes" value="${size}">
+    `;
+    sizeTags.appendChild(tag);
+    
+    input.value = '';
+    input.focus();
+}
+
+function removeSize(btn) {
+    btn.closest('.size-tag').remove();
+}
+
+// Allow adding size with Enter key
+document.getElementById('sizeInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addSize();
+    }
+});
+
+// Media Picker Functions
+function openMediaPicker() {
+    // Sync current selection to modal
+    const currentlySelected = Array.from(document.querySelectorAll('#selectedImages input[name="mediaIds"]')).map(input => input.value);
+    
+    document.querySelectorAll('.media-picker-item').forEach(item => {
+        if (currentlySelected.includes(item.dataset.id)) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+    
+    const modal = new bootstrap.Modal(document.getElementById('mediaPickerModal'));
+    modal.show();
+}
+
+function confirmImageSelection() {
+    const selectedItems = document.querySelectorAll('.media-picker-item.selected');
+    const selectedImages = document.getElementById('selectedImages');
+    const noImagesText = document.getElementById('noImagesText');
+    
+    // Clear current selection
+    selectedImages.innerHTML = '';
+    
+    // Add selected images
+    selectedItems.forEach(item => {
+        const id = item.dataset.id;
+        const src = item.dataset.src;
+        
+        const div = document.createElement('div');
+        div.className = 'col-2 selected-image-item';
+        div.dataset.id = id;
+        div.innerHTML = `
+            <div class="card position-relative">
+                <img src="${src}" class="card-img-top" alt="Selected" style="height: 80px; object-fit: cover;">
+                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="removeImage('${id}')" style="padding: 0.1rem 0.4rem;">
+                    <i class="bi bi-x"></i>
+                </button>
+                <input type="hidden" name="mediaIds" value="${id}">
+            </div>
+        `;
+        selectedImages.appendChild(div);
+    });
+    
+    // Show/hide no images text
+    noImagesText.style.display = selectedItems.length > 0 ? 'none' : 'block';
+    
+    // Close modal
+    bootstrap.Modal.getInstance(document.getElementById('mediaPickerModal')).hide();
+}
+
+function removeImage(id) {
+    const item = document.querySelector(`.selected-image-item[data-id="${id}"]`);
+    if (item) {
+        item.remove();
+    }
+    
+    // Update modal selection state
+    const modalItem = document.querySelector(`.media-picker-item[data-id="${id}"]`);
+    if (modalItem) {
+        modalItem.classList.remove('selected');
+    }
+    
+    // Show no images text if none left
+    const remaining = document.querySelectorAll('.selected-image-item');
+    document.getElementById('noImagesText').style.display = remaining.length > 0 ? 'none' : 'block';
+}
+
+// Handle click on media picker items
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.media-picker-item').forEach(item => {
+        item.addEventListener('click', function() {
+            this.classList.toggle('selected');
+        });
+    });
+});
+</script>

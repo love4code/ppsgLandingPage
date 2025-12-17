@@ -1,0 +1,71 @@
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2">Total Contacts</h6>
+                        <h2 class="mb-0"><%= stats.contacts %></h2>
+                    </div>
+                    <i class="bi bi-envelope fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2">Total Products</h6>
+                        <h2 class="mb-0"><%= stats.products %></h2>
+                    </div>
+                    <i class="bi bi-box fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2">Portfolio Posts</h6>
+                        <h2 class="mb-0"><%= stats.portfolio %></h2>
+                    </div>
+                    <i class="bi bi-images fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2">Media Items</h6>
+                        <h2 class="mb-0"><%= stats.media %></h2>
+                    </div>
+                    <i class="bi bi-folder fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quick Actions</h5>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="/admin/products/new" class="btn btn-primary">New Product</a>
+                    <a href="/admin/portfolio/new" class="btn btn-primary">New Portfolio Post</a>
+                    <a href="/admin/media" class="btn btn-secondary">Upload Media</a>
+                    <a href="/admin/settings" class="btn btn-secondary">Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

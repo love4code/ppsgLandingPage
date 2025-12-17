@@ -1,0 +1,9 @@
+<div class="container py-5 text-center">
+    <h1 class="display-1">500</h1>
+    <p class="lead">Internal server error</p>
+    <% if (typeof error !== 'undefined' && error.stack) { %>
+        <pre class="text-start"><%= error.stack %></pre>
+    <% } %>
+    <a href="/" class="btn btn-primary">Go Home</a>
+</div>
+

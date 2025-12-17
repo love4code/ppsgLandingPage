@@ -1,0 +1,65 @@
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold">Contact Us</h1>
+                <p class="lead text-muted">We'd love to hear from you</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <% if (typeof contactSuccess !== 'undefined' && contactSuccess) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Thank you for your message! We'll get back to you soon.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <% } %>
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <% } %>
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            <% errors.forEach(err => { %>
+                                <li><%= err.msg %></li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% } %>
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <form method="POST" action="/contact">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" value="<%= typeof formData !== 'undefined' && formData.name ? formData.name : '' %>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" value="<%= typeof formData !== 'undefined' && formData.phone ? formData.phone : '' %>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="town" class="form-label">Town/City *</label>
+                                <input type="text" class="form-control" id="town" name="town" value="<%= typeof formData !== 'undefined' && formData.town ? formData.town : '' %>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required><%= typeof formData !== 'undefined' && formData.message ? formData.message : '' %></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Portfolio</h3>
+    <a href="/admin/portfolio/new" class="btn btn-primary">New Portfolio Post</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Location</th>
+                        <th>Published</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (posts && posts.length > 0) { %>
+                        <% posts.forEach(post => { %>
+                            <tr>
+                                <td><%= post.title %></td>
+                                <td><%= post.location || '-' %></td>
+                                <td>
+                                    <span class="badge bg-<%= post.published ? 'success' : 'warning' %>">
+                                        <%= post.published ? 'Published' : 'Draft' %>
+                                    </span>
+                                </td>
+                                <td><%= new Date(post.createdAt).toLocaleDateString() %></td>
+                                <td>
+                                    <a href="/admin/portfolio/<%= post._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                                    <form method="POST" action="/admin/portfolio/<%= post._id %>/delete" class="d-inline" onsubmit="return confirm('Are you sure?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No portfolio posts yet</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

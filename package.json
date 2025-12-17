@@ -1,0 +1,36 @@
+{
+  "name": "aquarian-pool-spa",
+  "version": "1.0.0",
+  "description": "Production-ready web app for Aquarian Pool and Spa - swimming pool sales & construction company",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node scripts/seed.js"
+  },
+  "keywords": ["pool", "spa", "construction", "cms"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "ejs": "^3.1.9",
+    "express-ejs-layouts": "^2.5.1",
+    "dotenv": "^16.3.1",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.1",
+    "nodemailer": "^6.9.7",
+    "express-validator": "^7.0.1",
+    "express-session": "^1.17.3",
+    "connect-mongo": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
+

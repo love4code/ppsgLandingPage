@@ -1,0 +1,40 @@
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4 fw-bold mb-3"><%= post.title %></h1>
+                <% if (post.location || post.projectDate) { %>
+                    <div class="mb-4">
+                        <% if (post.location) { %>
+                            <span class="text-muted"><i class="bi bi-geo-alt"></i> <%= post.location %></span>
+                        <% } %>
+                        <% if (post.projectDate) { %>
+                            <span class="text-muted ms-3"><i class="bi bi-calendar"></i> <%= new Date(post.projectDate).toLocaleDateString() %></span>
+                        <% } %>
+                    </div>
+                <% } %>
+                <% if (post.mediaIds && post.mediaIds.length > 0) { %>
+                    <div class="mb-4">
+                        <div class="row g-3">
+                            <% post.mediaIds.forEach(media => { %>
+                                <div class="col-md-6">
+                                    <img src="/admin/media/image/<%= media._id %>/large" class="img-fluid rounded shadow" alt="<%= post.title %>">
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% } %>
+                <% if (post.excerpt) { %>
+                    <p class="lead text-muted mb-4"><%= post.excerpt %></p>
+                <% } %>
+                <div class="content">
+                    <%= post.content.replace(/\n/g, '<br>') %>
+                </div>
+                <div class="mt-4">
+                    <a href="/portfolio" class="btn btn-outline-primary">← Back to Portfolio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

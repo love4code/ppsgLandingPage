@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title + ' - ' : '' %><%= settings.companyName %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        :root {
+            <% if (settings.theme.mode === 'custom') { %>
+                --bs-primary: <%= settings.theme.custom.primary || '#0d6efd' %>;
+                --bs-secondary: <%= settings.theme.custom.secondary || '#6c757d' %>;
+                --bs-body-bg: <%= settings.theme.custom.background || '#ffffff' %>;
+                --bs-body-color: <%= settings.theme.custom.text || '#212529' %>;
+                --accent-color: <%= settings.theme.custom.accent || '#0d6efd' %>;
+            <% } else { %>
+                <% const presets = {
+                    'ocean-blue': { primary: '#0066cc', secondary: '#004499', bg: '#f8f9fa', text: '#212529', accent: '#00aaff' },
+                    'deep-teal': { primary: '#008080', secondary: '#006666', bg: '#ffffff', text: '#212529', accent: '#00cccc' },
+                    'crystal-clear': { primary: '#4a90e2', secondary: '#357abd', bg: '#f0f8ff', text: '#1a1a1a', accent: '#6bb3ff' },
+                    'midnight-blue': { primary: '#1a237e', secondary: '#0d47a1', bg: '#ffffff', text: '#212529', accent: '#3949ab' },
+                    'tropical-turquoise': { primary: '#00ced1', secondary: '#008b8b', bg: '#f0ffff', text: '#212529', accent: '#20b2aa' }
+                };
+                const theme = presets[settings.theme.presetName] || presets['ocean-blue']; %>
+                --bs-primary: <%= theme.primary %>;
+                --bs-secondary: <%= theme.secondary %>;
+                --bs-body-bg: <%= theme.bg %>;
+                --bs-body-color: <%= theme.text %>;
+                --accent-color: <%= theme.accent %>;
+            <% } %>
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <main>
+        <%- body %>
+    </main>
+    
+    <%- include('../partials/footer') %>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,165 @@
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <% if (product.mediaIds && product.mediaIds.length > 0) { %>
+                    <div class="mb-4">
+                        <img src="/admin/media/image/<%= product.mediaIds[0]._id %>/large" class="img-fluid rounded shadow w-100" alt="<%= product.name %>" id="mainImage">
+                        <% if (product.mediaIds.length > 1) { %>
+                            <div class="row g-2 mt-3">
+                                <% product.mediaIds.forEach((media, index) => { %>
+                                    <div class="col-3">
+                                        <img src="/admin/media/image/<%= media._id %>/thumb" 
+                                             class="img-fluid rounded cursor-pointer <%= index === 0 ? 'border border-primary border-2' : '' %>" 
+                                             alt="<%= product.name %>"
+                                             onclick="changeMainImage('/admin/media/image/<%= media._id %>/large', this)"
+                                             style="cursor: pointer; height: 80px; object-fit: cover; width: 100%;">
+                                    </div>
+                                <% }); %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+            </div>
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold mb-3"><%= product.name %></h1>
+                <% if (product.price) { %>
+                    <p class="text-primary fw-bold fs-3 mb-3">$<%= product.price.toLocaleString() %></p>
+                <% } %>
+                <% if (product.shortDescription) { %>
+                    <p class="lead text-muted mb-3"><%= product.shortDescription %></p>
+                <% } %>
+                <% if (product.description) { %>
+                    <div class="content mb-4">
+                        <%- product.description.replace(/\n/g, '<br>') %>
+                    </div>
+                <% } %>
+                
+                <% if (product.sizes && product.sizes.length > 0) { %>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Available Sizes:</label>
+                        <div class="d-flex flex-wrap gap-2" id="sizeSelector">
+                            <% product.sizes.forEach((size, index) => { %>
+                                <button type="button" 
+                                        class="btn btn-outline-primary size-btn <%= index === 0 ? 'active' : '' %>" 
+                                        data-size="<%= size %>"
+                                        onclick="selectSize(this)">
+                                    <%= size %>
+                                </button>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% } %>
+                
+                <a href="/products" class="btn btn-outline-secondary">← Back to Products</a>
+            </div>
+        </div>
+        
+        <!-- Product Inquiry Form -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-envelope"></i> Inquire About This Product</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <% if (typeof inquirySuccess !== 'undefined' && inquirySuccess) { %>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Thank you for your inquiry! We'll get back to you soon.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        <% } %>
+                        <% if (typeof inquiryError !== 'undefined' && inquiryError) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <%= inquiryError %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        <% } %>
+                        
+                        <form method="POST" action="/products/<%= product.slug %>/inquire" id="inquiryForm">
+                            <input type="hidden" name="productName" value="<%= product.name %>">
+                            <input type="hidden" name="selectedSize" id="selectedSizeInput" value="<%= product.sizes && product.sizes.length > 0 ? product.sizes[0] : '' %>">
+                            
+                            <% if (product.sizes && product.sizes.length > 0) { %>
+                                <div class="mb-3">
+                                    <label class="form-label">Selected Size</label>
+                                    <div class="form-control bg-light" id="selectedSizeDisplay">
+                                        <%= product.sizes[0] %>
+                                    </div>
+                                </div>
+                            <% } %>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name *</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email *</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="town" class="form-label">Town/City *</label>
+                                        <input type="text" class="form-control" id="town" name="town" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" name="message" rows="4" required placeholder="I'm interested in this product..."></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Send Inquiry</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function selectSize(btn) {
+    // Remove active class from all buttons
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    // Add active class to clicked button
+    btn.classList.add('active');
+    // Update hidden input and display
+    const size = btn.dataset.size;
+    document.getElementById('selectedSizeInput').value = size;
+    const display = document.getElementById('selectedSizeDisplay');
+    if (display) {
+        display.textContent = size;
+    }
+}
+
+function changeMainImage(src, thumb) {
+    document.getElementById('mainImage').src = src;
+    // Update border styling
+    document.querySelectorAll('.col-3 img').forEach(img => {
+        img.classList.remove('border', 'border-primary', 'border-2');
+    });
+    thumb.classList.add('border', 'border-primary', 'border-2');
+}
+</script>
+
+<style>
+.size-btn.active {
+    background-color: var(--bs-primary);
+    color: white;
+}
+</style>
