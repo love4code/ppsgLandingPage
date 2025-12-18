@@ -110,7 +110,8 @@ router.post(
         featured: req.body.featured === 'on' || req.body.featured === true,
         published: req.body.published === 'on' || req.body.published === true,
         mediaIds: mediaIds.map(id => id).filter(Boolean),
-        sizes: sizes
+        sizes: sizes,
+        seo: req.body.seo || {}
       }
 
       if (req.body.id) {
@@ -129,7 +130,9 @@ router.post(
           })
         }
 
-        await Product.findByIdAndUpdate(req.body.id, productData)
+        const existingProduct = await Product.findById(req.body.id)
+        Object.assign(existingProduct, productData)
+        await existingProduct.save()
         req.session.flash = {
           type: 'success',
           message: 'Product updated successfully'
