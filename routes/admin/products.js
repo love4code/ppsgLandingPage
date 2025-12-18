@@ -151,7 +151,8 @@ router.post(
           })
         }
 
-        await Product.create(productData)
+        const newProduct = new Product(productData)
+        await newProduct.save()
         req.session.flash = {
           type: 'success',
           message: 'Product created successfully'
