@@ -90,8 +90,10 @@ router.use('/products', requireAuth, require('./admin/products'))
 // Portfolio routes
 router.use('/portfolio', requireAuth, require('./admin/portfolio'))
 
-// Media routes
-router.use('/media', requireAuth, require('./admin/media'))
+// Media routes - image serving is public, other routes require auth
+const mediaRouter = require('./admin/media')
+router.get('/media/image/:id/:size', mediaRouter)
+router.use('/media', requireAuth, mediaRouter)
 
 // Settings routes
 router.use('/settings', requireAuth, require('./admin/settings'))
