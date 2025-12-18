@@ -3,6 +3,25 @@ const router = express.Router()
 const Product = require('../../models/Product')
 const Media = require('../../models/Media')
 const { body, validationResult } = require('express-validator')
+const slugify = require('slugify')
+
+// Helper to generate unique slug
+async function generateUniqueSlug (name, excludeId = null) {
+  let baseSlug = slugify(name || 'product', { lower: true, strict: true })
+  if (!baseSlug) baseSlug = 'product'
+  let slug = baseSlug
+  let counter = 1
+
+  const query = { slug }
+  if (excludeId) query._id = { $ne: excludeId }
+
+  while (await Product.exists(query)) {
+    slug = `${baseSlug}-${counter}`
+    query.slug = slug
+    counter++
+  }
+  return slug
+}
 
 // List all products
 router.get('/', async (req, res) => {
@@ -102,8 +121,11 @@ router.post(
         }
       }
 
+      const slug = await generateUniqueSlug(req.body.name, req.body.id || null)
+
       const productData = {
         name: req.body.name,
+        slug: slug,
         shortDescription: req.body.shortDescription || '',
         description: req.body.description || '',
         price: req.body.price ? parseFloat(req.body.price) : undefined,
