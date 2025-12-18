@@ -87,6 +87,9 @@ app.use(async (req, res, next) => {
       delete req.session.contactSuccess
     }
 
+    // Make login status available to views
+    res.locals.isLoggedIn = !!req.session.adminId
+
     next()
   } catch (error) {
     console.error('Error loading settings:', error)

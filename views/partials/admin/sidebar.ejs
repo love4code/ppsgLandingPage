@@ -1,27 +1,48 @@
 <aside class="admin-sidebar">
-    <div class="sidebar-header">
-        <h4 class="mb-0">Aquarian Pool & Spa</h4>
-        <small class="text-muted">Admin Panel</small>
-    </div>
-    <nav class="sidebar-nav">
-        <a href="/admin/dashboard" class="nav-item <%= typeof title !== 'undefined' && title === 'Dashboard' ? 'active' : '' %>">
-            <i class="bi bi-speedometer2"></i> Dashboard
-        </a>
-        <a href="/admin/contacts" class="nav-item <%= typeof title !== 'undefined' && title === 'Contacts' ? 'active' : '' %>">
-            <i class="bi bi-envelope"></i> Contacts
-        </a>
-        <a href="/admin/products" class="nav-item <%= typeof title !== 'undefined' && title === 'Products' ? 'active' : '' %>">
-            <i class="bi bi-box"></i> Products
-        </a>
-        <a href="/admin/portfolio" class="nav-item <%= typeof title !== 'undefined' && title === 'Portfolio' ? 'active' : '' %>">
-            <i class="bi bi-images"></i> Portfolio
-        </a>
-        <a href="/admin/media" class="nav-item <%= typeof title !== 'undefined' && title === 'Media Library' ? 'active' : '' %>">
-            <i class="bi bi-folder"></i> Media Library
-        </a>
-        <a href="/admin/settings" class="nav-item <%= typeof title !== 'undefined' && title === 'Settings' ? 'active' : '' %>">
-            <i class="bi bi-gear"></i> Settings
-        </a>
-    </nav>
+  <div class="sidebar-header">
+    <h4 class="mb-0">Aquarian Pool & Spa</h4>
+    <small class="text-muted">Admin Panel</small>
+  </div>
+  <nav class="sidebar-nav">
+    <a
+      href="/admin/dashboard"
+      class="nav-item <%= typeof title !== 'undefined' && title === 'Dashboard' ? 'active' : '' %>"
+    >
+      <i class="bi bi-speedometer2"></i> Dashboard
+    </a>
+    <a
+      href="/admin/contacts"
+      class="nav-item <%= typeof title !== 'undefined' && title === 'Contacts' ? 'active' : '' %>"
+    >
+      <i class="bi bi-envelope"></i> Contacts
+    </a>
+    <a
+      href="/admin/products"
+      class="nav-item <%= typeof title !== 'undefined' && title === 'Products' ? 'active' : '' %>"
+    >
+      <i class="bi bi-box"></i> Products
+    </a>
+    <a
+      href="/admin/portfolio"
+      class="nav-item <%= typeof title !== 'undefined' && title === 'Portfolio' ? 'active' : '' %>"
+    >
+      <i class="bi bi-images"></i> Portfolio
+    </a>
+    <a
+      href="/admin/media"
+      class="nav-item <%= typeof title !== 'undefined' && title === 'Media Library' ? 'active' : '' %>"
+    >
+      <i class="bi bi-folder"></i> Media Library
+    </a>
+    <a
+      href="/admin/settings"
+      class="nav-item <%= typeof title !== 'undefined' && title === 'Settings' ? 'active' : '' %>"
+    >
+      <i class="bi bi-gear"></i> Settings
+    </a>
+    <hr class="my-2" />
+    <a href="/" class="nav-item" target="_blank">
+      <i class="bi bi-house"></i> View Site
+    </a>
+  </nav>
 </aside>
-

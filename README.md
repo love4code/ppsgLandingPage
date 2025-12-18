@@ -5,6 +5,7 @@ A production-ready web application for a swimming pool sales & construction comp
 ## Features
 
 ### Public Site
+
 - **Landing Page** with customizable hero section (text or image)
 - **Portfolio** showcase with list and detail pages
 - **Products** catalog with list and detail pages
@@ -13,6 +14,7 @@ A production-ready web application for a swimming pool sales & construction comp
 - **Theme Customization** with 5 preset water-inspired themes or custom colors
 
 ### Admin CMS
+
 - **Secure Authentication** with session management
 - **Dashboard** with quick stats
 - **Contacts Management** - view and manage form submissions
@@ -48,33 +50,36 @@ A production-ready web application for a swimming pool sales & construction comp
 1. **Clone or download the project**
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
-   
+
    Copy `.env.example` to `.env` and configure:
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Edit `.env` with your settings:
+
    ```env
    # Server
    PORT=3000
    NODE_ENV=development
-   
+
    # MongoDB
    MONGODB_URI=mongodb://localhost:27017/aquarian-pool-spa
-   
+
    # Admin Credentials
    ADMIN_EMAIL=admin@aquarianpoolandspa.com
    ADMIN_PASSWORD=your-secure-password
-   
+
    # Session Secret (generate a random string)
    SESSION_SECRET=your-super-secret-session-key-change-this-in-production
-   
+
    # Email (Nodemailer SMTP)
    SMTP_HOST=smtp.gmail.com
    SMTP_PORT=587
@@ -86,22 +91,26 @@ A production-ready web application for a swimming pool sales & construction comp
    ```
 
 4. **Seed the database**
+
    ```bash
    npm run seed
    ```
-   
+
    This creates:
+
    - Admin user (from `ADMIN_EMAIL` and `ADMIN_PASSWORD`)
    - Default settings
 
 5. **Start the server**
-   
+
    Development mode (with nodemon):
+
    ```bash
    npm run dev
    ```
-   
+
    Production mode:
+
    ```bash
    npm start
    ```
@@ -112,21 +121,21 @@ A production-ready web application for a swimming pool sales & construction comp
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `PORT` | Server port | No (default: 3000) |
-| `NODE_ENV` | Environment (development/production) | No |
-| `MONGODB_URI` | MongoDB connection string | Yes |
-| `ADMIN_EMAIL` | Admin login email | Yes |
-| `ADMIN_PASSWORD` | Admin login password | Yes |
-| `SESSION_SECRET` | Secret for session encryption | Yes |
-| `SMTP_HOST` | SMTP server host | Yes (for email) |
-| `SMTP_PORT` | SMTP server port | Yes (for email) |
-| `SMTP_SECURE` | Use TLS (true/false) | Yes (for email) |
-| `SMTP_USER` | SMTP username | Yes (for email) |
-| `SMTP_PASS` | SMTP password/app password | Yes (for email) |
-| `MAIL_TO` | Recipient email for contact form | Yes (for email) |
-| `MAIL_FROM` | Sender email address | Yes (for email) |
+| Variable         | Description                          | Required           |
+| ---------------- | ------------------------------------ | ------------------ |
+| `PORT`           | Server port                          | No (default: 3000) |
+| `NODE_ENV`       | Environment (development/production) | No                 |
+| `MONGODB_URI`    | MongoDB connection string            | Yes                |
+| `ADMIN_EMAIL`    | Admin login email                    | Yes                |
+| `ADMIN_PASSWORD` | Admin login password                 | Yes                |
+| `SESSION_SECRET` | Secret for session encryption        | Yes                |
+| `SMTP_HOST`      | SMTP server host                     | Yes (for email)    |
+| `SMTP_PORT`      | SMTP server port                     | Yes (for email)    |
+| `SMTP_SECURE`    | Use TLS (true/false)                 | Yes (for email)    |
+| `SMTP_USER`      | SMTP username                        | Yes (for email)    |
+| `SMTP_PASS`      | SMTP password/app password           | Yes (for email)    |
+| `MAIL_TO`        | Recipient email for contact form     | Yes (for email)    |
+| `MAIL_FROM`      | Sender email address                 | Yes (for email)    |
 
 ## Creating Admin User
 
@@ -137,6 +146,7 @@ npm run seed
 ```
 
 The credentials are taken from your `.env` file:
+
 - Email: `ADMIN_EMAIL`
 - Password: `ADMIN_PASSWORD`
 
@@ -147,7 +157,9 @@ To create additional admin users, you can use MongoDB directly or create a scrip
 The application supports two theme modes:
 
 ### Preset Themes
+
 Five water-inspired preset themes:
+
 - **Ocean Blue** - Deep blue tones
 - **Deep Teal** - Teal and turquoise
 - **Crystal Clear** - Light blue and clear tones
@@ -155,7 +167,9 @@ Five water-inspired preset themes:
 - **Tropical Turquoise** - Bright turquoise
 
 ### Custom Theme
+
 Set your own colors:
+
 - Primary Color
 - Secondary Color
 - Background Color
@@ -186,6 +200,7 @@ Themes are applied site-wide using CSS variables and are stored in the database.
 ### Accessing Images
 
 Images are served via:
+
 ```
 /admin/media/image/{mediaId}/{size}
 ```
@@ -284,23 +299,27 @@ Uses nodemon for auto-restart on file changes.
 ## Troubleshooting
 
 ### MongoDB Connection Issues
+
 - Verify `MONGODB_URI` is correct
 - Ensure MongoDB is running
 - Check network/firewall settings
 
 ### Email Not Sending
+
 - Verify SMTP credentials
 - For Gmail, use an App Password (not regular password)
 - Check SMTP port and security settings
 - Verify `MAIL_TO` and `MAIL_FROM` are set
 
 ### Image Upload Fails
+
 - Check file size limits (max 10MB per file)
 - Verify file type (images only)
 - Check MongoDB storage capacity
 - Review server logs for errors
 
 ### Admin Login Issues
+
 - Run seed script to create admin user
 - Verify `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env`
 - Check session configuration
@@ -312,4 +331,3 @@ ISC
 ## Support
 
 For issues or questions, please contact the development team.
-

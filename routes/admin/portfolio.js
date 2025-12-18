@@ -65,12 +65,10 @@ router.get('/:id/edit', async (req, res) => {
       'mediaIds'
     )
     if (!post) {
-      return res
-        .status(404)
-        .render('errors/404', {
-          title: 'Portfolio Post Not Found',
-          layout: 'layouts/admin'
-        })
+      return res.status(404).render('errors/404', {
+        title: 'Portfolio Post Not Found',
+        layout: 'layouts/admin'
+      })
     }
 
     const media = await Media.find().sort({ createdAt: -1 }).limit(50)
