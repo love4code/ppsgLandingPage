@@ -90,10 +90,35 @@ router.use('/products', requireAuth, require('./admin/products'))
 // Portfolio routes
 router.use('/portfolio', requireAuth, require('./admin/portfolio'))
 
-// Media routes - image serving is public, other routes require auth
-const mediaRouter = require('./admin/media')
-router.get('/media/image/:id/:size', mediaRouter)
-router.use('/media', requireAuth, mediaRouter)
+// Media image route - public (no auth required)
+const Media = require('../models/Media')
+const MediaStorage = require('../models/MediaStorage')
+router.get('/media/image/:id/:size', async (req, res) => {
+  try {
+    const { id, size } = req.params
+    const media = await Media.findById(id)
+
+    if (!media || !['large', 'medium', 'thumb'].includes(size)) {
+      return res.status(404).send('Image not found')
+    }
+
+    const storageId = media.sizes[size].storageId
+    const storage = await MediaStorage.findById(storageId)
+
+    if (!storage) {
+      return res.status(404).send('Image not found')
+    }
+
+    res.contentType(storage.contentType)
+    res.send(storage.data)
+  } catch (error) {
+    console.error('Get image error:', error)
+    res.status(500).send('Error loading image')
+  }
+})
+
+// Media routes (other routes require auth)
+router.use('/media', requireAuth, require('./admin/media'))
 
 // Settings routes
 router.use('/settings', requireAuth, require('./admin/settings'))
