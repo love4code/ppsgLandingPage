@@ -44,12 +44,10 @@ router.get('/:id/edit', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate('mediaIds')
     if (!product) {
-      return res
-        .status(404)
-        .render('errors/404', {
-          title: 'Product Not Found',
-          layout: 'layouts/admin'
-        })
+      return res.status(404).render('errors/404', {
+        title: 'Product Not Found',
+        layout: 'layouts/admin'
+      })
     }
 
     const media = await Media.find().sort({ createdAt: -1 }).limit(50)
@@ -78,8 +76,8 @@ router.post(
       .optional({ checkFalsy: true })
       .isFloat({ min: 0 })
       .withMessage('Price must be a positive number'),
-    body('featured').optional().isBoolean(),
-    body('published').optional().isBoolean()
+    body('featured').optional(),
+    body('published').optional()
   ],
   async (req, res) => {
     const errors = validationResult(req)
