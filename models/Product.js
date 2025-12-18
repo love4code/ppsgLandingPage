@@ -63,21 +63,29 @@ productSchema.index({ createdAt: -1 })
 
 // Generate slug from name before saving
 productSchema.pre('save', async function (next) {
-  if (this.isModified('name') || this.isNew) {
-    let baseSlug = slugify(this.name, { lower: true, strict: true })
-    let slug = baseSlug
-    let counter = 1
+  try {
+    if (this.isModified('name') || this.isNew) {
+      let baseSlug = slugify(this.name || 'product', {
+        lower: true,
+        strict: true
+      })
+      if (!baseSlug) baseSlug = 'product'
+      let slug = baseSlug
+      let counter = 1
 
-    while (
-      await mongoose.model('Product').exists({ slug, _id: { $ne: this._id } })
-    ) {
-      slug = `${baseSlug}-${counter}`
-      counter++
+      while (
+        await mongoose.model('Product').exists({ slug, _id: { $ne: this._id } })
+      ) {
+        slug = `${baseSlug}-${counter}`
+        counter++
+      }
+
+      this.slug = slug
     }
-
-    this.slug = slug
+    next()
+  } catch (error) {
+    next(error)
   }
-  next()
 })
 
 module.exports = mongoose.model('Product', productSchema)
